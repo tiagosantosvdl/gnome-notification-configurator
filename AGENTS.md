@@ -66,6 +66,10 @@ For an authorized release:
 
 README installation, badges and support links belong to this fork. Identify Codex maintenance, retain upstream credit and explain that the GNOME Extensions listing distributes upstream. Deployment-specific positioning and notification rules belong in the consuming repository, not in hard-coded user settings here.
 
+## Validation evidence
+
+Local validation passed TypeScript checking, strict schema compilation, generated-JavaScript syntax checks, all eight packaging regression tests and a real ZIP/DEB build. All three translations compiled. CI execution, release publication and desktop behavior are separate checks; inspect the actual workflow and assets before claiming completion.
+
 ## Installation and runtime limits
 
 The Debian package is `gnome-shell-extension-notification-configurator-tiagosantosvdl` and installs under `/usr/share/gnome-shell/extensions/notification-configurator@exposedcat/`. A per-user copy with the same UUID takes precedence. Preserve preferences and back up unmanaged copies when switching installation methods. Inspect the apt transaction, installed metadata, ownership and files when installation is explicitly requested. Advise a fresh login; do not trigger it.
