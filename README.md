@@ -9,7 +9,7 @@ This is [@tiagosantosvdl's fork](https://github.com/tiagosantosvdl/gnome-notific
 
 ## Project status
 
-Current fork version: **2.6.2**; integer GNOME extension version: **23**. The fork adds versioned ZIP and Debian packages with SHA-256 checksums, separate CI and release workflows, consistent version metadata, and builds that do not install into the running desktop.
+Current fork version: **2.6.3**; integer GNOME extension version: **24**. The fork adds versioned ZIP and Debian packages with SHA-256 checksums, separate CI and release workflows, consistent version metadata, and builds that do not install into the running desktop.
 
 - Extension UUID: `notification-configurator@exposedcat`.
 - Declared GNOME Shell support: **46–51**.
@@ -39,7 +39,7 @@ Choose one installation method. A per-user copy shadows a system copy with the s
 ### Debian / Ubuntu package
 
 ```sh
-sudo apt install ./gnome-shell-extension-notification-configurator-tiagosantosvdl_2.6.2_all.deb
+sudo apt install ./gnome-shell-extension-notification-configurator-tiagosantosvdl_2.6.3_all.deb
 ```
 
 The architecture-independent package depends on GNOME Shell 46–51 and `gir1.2-adw-1`. It installs under `/usr/share/gnome-shell/extensions/notification-configurator@exposedcat/`.
@@ -53,7 +53,7 @@ gnome-extensions enable notification-configurator@exposedcat
 ### Per-user ZIP
 
 ```sh
-gnome-extensions install --force ./notification-configurator@exposedcat-2.6.2.zip
+gnome-extensions install --force ./notification-configurator@exposedcat-2.6.3.zip
 ```
 
 Install libadwaita's introspection bindings (`gir1.2-adw-1` on Debian / Ubuntu) for preferences. Log out and back in, then enable the extension using the command above.
@@ -79,13 +79,13 @@ make release
 
 CI uses Node.js 22. Build output goes to ignored `_build/`; release artifacts go to ignored `dist/`. Plain `make` builds without installing or activating the extension. Release output is:
 
-- `dist/notification-configurator@exposedcat-2.6.2.zip`
-- `dist/gnome-shell-extension-notification-configurator-tiagosantosvdl_2.6.2_all.deb`
+- `dist/notification-configurator@exposedcat-2.6.3.zip`
+- `dist/gnome-shell-extension-notification-configurator-tiagosantosvdl_2.6.3_all.deb`
 - `dist/SHA256SUMS`
 
 ```sh
 (cd dist && sha256sum -c SHA256SUMS)
-sudo apt install ./dist/gnome-shell-extension-notification-configurator-tiagosantosvdl_2.6.2_all.deb
+sudo apt install ./dist/gnome-shell-extension-notification-configurator-tiagosantosvdl_2.6.3_all.deb
 ```
 
 `make install` explicitly installs the per-user ZIP. `make clean` removes `_build/` and `dist/`. Source schemas, translations and generated JavaScript are included in both package formats; development dependencies are excluded.

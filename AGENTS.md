@@ -51,7 +51,7 @@ git diff --check
 
 ## Versions and CI/CD
 
-Release version is `2.6.2`; integer GNOME version is `23`. Declared Shell support is 46–51, inherited from current upstream source. Type and packaging validation do not establish compatibility across that full range. The upstream checkout initially had a stale lockfile version and a removed TypeScript compiler option; the fork aligns version fields and removes that option.
+Release version is `2.6.3`; integer GNOME version is `24`. Declared Shell support is 46–51, inherited from current upstream source. Type and packaging validation do not establish compatibility across that full range. The upstream checkout initially had a stale lockfile version and a removed TypeScript compiler option; the fork aligns version fields and removes that option.
 
 `package.json` version, lockfile root/package versions, and metadata `version-name` must match. Keep metadata `version` a positive integer and increment it for extension updates. Prerelease names use a space in GNOME `version-name` and a hyphen in tags; Debian versions use `~` so prereleases sort before stable releases. Tag names must be `v<release-version>`.
 
