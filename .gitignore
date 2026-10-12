@@ -1,6 +1,8 @@
-node_modules
-scripts/__pycache__
+node_modules/
+_build/
+dist/
+__pycache__/
+*.py[cod]
 schemas/gschemas.compiled
-dist
 *.zip
 *~

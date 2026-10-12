@@ -1,0 +1,78 @@
+name: Check and build
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install packaging tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends gettext libglib2.0-bin make dpkg-dev python3
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.x"
+          cache: npm
+
+      - name: Validate source and packaging
+        run: |
+          npm ci
+          npm run check
+          npm run build
+          python3 -B <<'PYTHON'
+          import subprocess
+          from pathlib import Path
+          for source in sorted(Path('_build').rglob('*.js')):
+              with source.open() as stream:
+                  subprocess.run(['node', '--input-type=module', '--check'], stdin=stream, check=True)
+          PYTHON
+          glib-compile-schemas --strict --dry-run schemas
+          python3 -B -m unittest discover -s tests -p '*test.py'
+
+      - name: Check release version
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name || (github.ref_type == 'tag' && github.ref_name) || '' }}
+        run: |
+          python3 <<'PY'
+          import json
+          import os
+          metadata = json.load(open('metadata.json'))
+          package = json.load(open('package.json'))
+          lock = json.load(open('package-lock.json'))
+          if package['version'] != lock['version'] or package['version'] != lock['packages']['']['version'] or package['version'] != metadata['version-name'].replace(' ', '-'):
+              raise SystemExit('Package, lockfile and metadata release versions must match.')
+          version = str(metadata.get('version-name', metadata['version'])).replace(' ', '-')
+          tag = os.environ['RELEASE_TAG']
+          if tag and tag != f'v{version}':
+              raise SystemExit(f'Release tag {tag} must match metadata.json (v{version}).')
+          PY
+
+      - name: Build installable packages
+        run: make release
+
+      - name: Verify package checksums
+        run: cd dist && sha256sum -c SHA256SUMS
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: notification-configurator-release-packages
+          path: dist/*
+          if-no-files-found: error
+

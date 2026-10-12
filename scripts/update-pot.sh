@@ -13,7 +13,7 @@ xgettext \
   --package-name="Notification Configurator" \
   --package-version="3" \
   --output=./po/main.pot \
-  ./dist/*.js ./dist/**/*.js
+  ./_build/*.js ./_build/**/*.js
 
 for file in ./po/*.po
 do

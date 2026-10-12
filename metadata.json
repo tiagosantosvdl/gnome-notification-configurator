@@ -3,7 +3,16 @@
   "description": "An Ultimate Notification Configurator for GNOME: notification rate limiting, timeout, positioning, fullscreen notifications, custom colors, filtering and more features upcoming. Consider leaving a review on GNOME Extensions!",
   "uuid": "notification-configurator@exposedcat",
   "settings-schema": "org.gnome.shell.extensions.notification-configurator",
-  "shell-version": ["46", "47", "48", "49", "50", "51"],
-  "url": "https://github.com/ExposedCat/gnome-notification-configurator",
-  "gettext-domain": "notification-configurator@exposedcat"
+  "shell-version": [
+    "46",
+    "47",
+    "48",
+    "49",
+    "50",
+    "51"
+  ],
+  "url": "https://github.com/tiagosantosvdl/gnome-notification-configurator",
+  "gettext-domain": "notification-configurator@exposedcat",
+  "version": 23,
+  "version-name": "2.6.2"
 }

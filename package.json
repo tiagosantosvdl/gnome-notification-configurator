@@ -1,7 +1,7 @@
 {
   "name": "gnome-shell-notification-configurator",
   "description": "GNOME Shell notification configurator",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "keywords": [],
   "scripts": {
     "start": "./scripts/cli dev",
@@ -13,7 +13,9 @@
     "install:local": "./scripts/cli install",
     "pack": "./scripts/cli pack",
     "translate": "./scripts/cli translate",
-    "format": "biome check --write src"
+    "format": "biome check --write src",
+    "check": "tsc --noEmit",
+    "release": "make release"
   },
   "author": "ExposedCat",
   "license": "GPL-3.0-or-later",
@@ -25,12 +27,12 @@
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ExposedCat/gnome-shell-notification-cleaner.git"
+    "url": "git+https://github.com/tiagosantosvdl/gnome-notification-configurator.git"
   },
   "bugs": {
-    "url": "https://github.com/ExposedCat/gnome-shell-notification-cleaner/issues"
+    "url": "https://github.com/tiagosantosvdl/gnome-notification-configurator/issues"
   },
-  "homepage": "https://github.com/ExposedCat/gnome-shell-notification-cleaner#readme",
+  "homepage": "https://github.com/tiagosantosvdl/gnome-notification-configurator#readme",
   "sideEffects": false,
   "dependencies": {
     "@biomejs/biome": "^1.9.4",

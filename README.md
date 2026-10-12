@@ -1,149 +1,137 @@
-<h1 align="center">
-	<img style="width:64px" src="./assets/logo.png" alt="Logo"><br>
-  GNOME Notification Configurator<br>
-  <img style="width:512px" src="./assets/preview.png" alt="Screenshot">
-</h1>
-<p align="center"><strong>Advanced GNOME notification capabilities including rate limiting, custom color theming per application, and notification positioning</strong></p>
+# Notification Configurator
 
-<div align="center">
+This is [@tiagosantosvdl's fork](https://github.com/tiagosantosvdl/gnome-notification-configurator) of [upstream Notification Configurator](https://github.com/ExposedCat/gnome-notification-configurator), a GNOME Shell extension for notification positioning, filtering, timeouts and appearance. This fork is maintained by Codex and provides its own versioned extension packages.
 
-<a href="https://coff.ee/exposedcat" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
+[![Check and build](https://github.com/tiagosantosvdl/gnome-notification-configurator/actions/workflows/ci.yml/badge.svg)](https://github.com/tiagosantosvdl/gnome-notification-configurator/actions/workflows/ci.yml)
+[![Release packages](https://github.com/tiagosantosvdl/gnome-notification-configurator/actions/workflows/release.yml/badge.svg)](https://github.com/tiagosantosvdl/gnome-notification-configurator/actions/workflows/release.yml)
+[![GNOME 46–51](https://img.shields.io/badge/GNOME-46--51-blue.svg)](metadata.json)
+[![License: GPL v3 or later](https://img.shields.io/badge/License-GPLv3%2B-blue.svg)](LICENSE)
 
-[![](https://img.shields.io/badge/author%20blog%20on-Telegram-informational?style=for-the-badge&logo=telegram&logoColor=26A5E4&color=26A5E4)](https://t.me/ExposedCatDev)
-[![](https://img.shields.io/badge/author-Reddit-informational?style=for-the-badge&logo=reddit&logoColor=FF5700&color=FF5700)](https://www.reddit.com/user/ExposedCatDev)
+## Project status
 
-</div>
+Current fork version: **2.6.2**; integer GNOME extension version: **23**. The fork adds versioned ZIP and Debian packages with SHA-256 checksums, separate CI and release workflows, consistent version metadata, and builds that do not install into the running desktop.
 
-<br>
+- Extension UUID: `notification-configurator@exposedcat`.
+- Declared GNOME Shell support: **46–51**.
+- Settings schema: `org.gnome.shell.extensions.notification-configurator`.
+- Gettext domain: `notification-configurator@exposedcat`.
+
+The fork retains upstream's UUID and settings schema, preserving saved preferences. The [GNOME Extensions listing](https://extensions.gnome.org/extension/8249/notification-configurator/) distributes upstream; use this fork's releases or source to install the fork. Declared compatibility is not a completed desktop test matrix. Runtime behavior needs separate verification after installation and a fresh login.
 
 ## Features
 
-- **Global and Pattern-Based Rules** - Configure default behavior globally or
-  create enabled/disabled per-pattern overrides matched by case-insensitive
-  regular expressions for app name, title, and body text
-- **Notification Filtering** - Hide or close matching notifications before they
-  appear
-- **Notification Rate Limiting** - Hide or close frequent notifications from the
-  same application within a configurable time threshold
-- **Notification Center Controls** - Disable stacking for matching
-  notifications and set how many notifications are kept per source
-- **Notification Timeout** - Configure auto-dismiss timing, keep notifications
-  visible while idle, or set timeout to `0` to keep notifications until dismissed
-- **Urgency Control** - Force notifications to normal urgency when needed
-- **Window Attention Handling** - Activate attention-requesting windows instead
-  of showing a notification
-- **Fullscreen Notifications** - Enable or disable notifications while
-  applications are running in fullscreen mode
-- **Notification Positioning** - Set horizontal alignment (fill, left, center,
-  right) and vertical alignment (fill, top, center, bottom)
-- **Custom Appearance** - Hide the app title/time row, customize background,
-  title, body, app name, and time colors, and adjust text sizes
-- **Custom Margins** - Add top, bottom, left, and right notification margins
-- **Configuration Sync** - Export globals and patterns to a JSON file, or import
-  selected entries. Expand conflicts to preserve individual non-default settings;
-  patterns with identical app name, title, and body matchers are merged in place
-- **Test Notifications** - Send sample notifications from the preferences window
-  to preview matching and styling changes
+- Set horizontal and vertical notification positioning, including the bottom-right corner.
+- Configure global rules and per-pattern overrides matched by case-insensitive regular expressions for application, title and body.
+- Filter notifications and limit repeated notifications from the same application.
+- Configure timeout, urgency, fullscreen behavior and notification-center grouping.
+- Customize colors, text sizes, margins and the application title row.
+- Configure how attention-requesting windows are handled.
+- Export and import configuration and send sample notifications from preferences.
+
+![Notification Configurator preview](assets/preview.png)
 
 ## Installation
 
-### Extension Manager (Recommended)
+Download packages from this fork's [GitHub Releases](https://github.com/tiagosantosvdl/gnome-notification-configurator/releases). Each release includes a ZIP, Debian package and `SHA256SUMS`.
 
-- Install
-  [Extension Manager](https://flathub.org/apps/com.mattjakeman.ExtensionManager)
-- Search For `Notification Configurator` in `Browse` tab
-- Select the extension and click `Install`
+Choose one installation method. A per-user copy shadows a system copy with the same UUID. Back up an existing per-user copy before removing it when switching to the Debian package. Upstream and this fork share a UUID and cannot run side by side.
 
-### GNOME Extenssions Website
+### Debian / Ubuntu package
 
-<a href="https://extensions.gnome.org/extension/8249/notification-configurator/">
-  <!-- Button SVG by Just Perfection developer -->
-  <img src="./assets/download-from-ego.svg" height="80">
-</a>
+```sh
+sudo apt install ./gnome-shell-extension-notification-configurator-tiagosantosvdl_2.6.2_all.deb
+```
 
-### Manual Installation
+The architecture-independent package depends on GNOME Shell 46–51 and `gir1.2-adw-1`. It installs under `/usr/share/gnome-shell/extensions/notification-configurator@exposedcat/`.
 
-If latest version of the extension is not yet available on the GNOME Extensions
-website, you can install it manually:
+Log out and back in after installation or an upgrade, then enable it:
 
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/ExposedCat/gnome-notification-configurator.git
-   cd gnome-notification-configurator
-   ```
+```sh
+gnome-extensions enable notification-configurator@exposedcat
+```
 
-2. Install the extension:
-   ```bash
-   npm run install:local
-   ```
+### Per-user ZIP
 
-   This will build the extension and install it to your local GNOME Shell
-   extensions directory (`~/.local/share/gnome-shell/extensions/`).
+```sh
+gnome-extensions install --force ./notification-configurator@exposedcat-2.6.2.zip
+```
 
-3. Restart GNOME Shell:
-   - Log out and log back in
+Install libadwaita's introspection bindings (`gir1.2-adw-1` on Debian / Ubuntu) for preferences. Log out and back in, then enable the extension using the command above.
 
-4. Enable the extension:
-   ```bash
-   gnome-extensions enable notification-configurator@exposedcat
-   ```
+### Verify downloads
 
-   Or use Extensions Manager app to enable "Notification Configurator".
+Place the packages and `SHA256SUMS` together, then run:
 
-## Development
+```sh
+sha256sum -c SHA256SUMS
+```
 
-### Development Workflow
+## Build from source
 
-1. **Setup development environment:**
-   ```bash
-   npm install
-   ```
+```sh
+sudo apt install git gettext libglib2.0-bin make python3 dpkg-dev nodejs npm
+git clone https://github.com/tiagosantosvdl/gnome-notification-configurator.git
+cd gnome-notification-configurator
+npm ci
+make check
+make release
+```
 
-2. **Start development session:**
-   ```bash
-   npm start
-   # Or in a container
-   npm run start:container
-   ```
-   This will:
-   - Compile TypeScript sources
-   - Install to extensions directory
-   - Launch nested GNOME Shell session for testing
+CI uses Node.js 22. Build output goes to ignored `_build/`; release artifacts go to ignored `dist/`. Plain `make` builds without installing or activating the extension. Release output is:
 
-3. **Debug the extension:**
-   - Check terminal output for logs in the nested shell session
-   - Access Looking Glass debugger with `Alt+F2` → `lg` for interactive
-     debugging
+- `dist/notification-configurator@exposedcat-2.6.2.zip`
+- `dist/gnome-shell-extension-notification-configurator-tiagosantosvdl_2.6.2_all.deb`
+- `dist/SHA256SUMS`
 
-## Translations
+```sh
+(cd dist && sha256sum -c SHA256SUMS)
+sudo apt install ./dist/gnome-shell-extension-notification-configurator-tiagosantosvdl_2.6.2_all.deb
+```
 
-To add translations for the extension:
+`make install` explicitly installs the per-user ZIP. `make clean` removes `_build/` and `dist/`. Source schemas, translations and generated JavaScript are included in both package formats; development dependencies are excluded.
 
-1. **Create a new translation file:**
-   ```bash
-   cp po/main.pot po/langcode.po
-   ```
-   Replace `langcode` with your language code (e.g., `po/uk.po` for Ukrainian).
+## Configuration and logs
 
-2. **Edit the translation file:** Use
-   [Gtranslator](https://flathub.org/apps/details/org.gnome.Gtranslator) or
-   [POEdit](https://flathub.org/apps/details/net.poedit.Poedit) to edit the
-   created file and make translations.
+```sh
+gnome-extensions prefs notification-configurator@exposedcat
+journalctl --user --boot --output=short-iso --grep '[Nn]otification'
+```
 
-3. **Update translations when needed:** In case new labels were added or
-   original labels changed, run:
-   ```bash
-   npm run translate
-   ```
-   Then update your translations if needed.
+Set horizontal position to **Right** and vertical position to **Bottom** in preferences. Configuration is stored as JSON strings in the `global` and `patterns` schema keys. Existing preferences take precedence over deployment defaults. Review logs before sharing them.
 
-## License
+The extension package keeps upstream defaults. Machine-specific defaults belong in the deployment configuration, rather than overwriting users' saved settings in the package.
 
-This project is licensed under the GNU General Public License v3.0 or later
-(GPL-3.0-or-later).
+## Verification
 
-## Contributing
+```sh
+npm run check
+glib-compile-schemas --strict --dry-run schemas
+python3 -B -m unittest discover -s tests -p '*test.py'
+make release
+(cd dist && sha256sum -c SHA256SUMS)
+git diff --check
+```
 
-Contributions are welcome! Please feel free to submit pull requests or open
-issues on the
-[GitHub repository](https://github.com/ExposedCat/gnome-shell-notification-cleaner).
+Packaging tests verify matching ZIP/DEB extension payloads, checksums, root ownership, directory/file permissions, required files, version validation and prerelease ordering. TypeScript checking and package validation do not establish visible GNOME Shell behavior.
+
+## Releases
+
+Keep `package.json`, both root version entries in `package-lock.json`, and metadata `version-name` consistent. Metadata `version` remains a positive integer; `version-name` uses a space instead of a hyphen for prereleases.
+
+Branch pushes and pull requests run checks and build downloadable artifacts. They do not create tags or publish releases. An explicit `v<version>` tag push or a published GitHub Release runs the release workflow, validates the version, builds packages and attaches them to the release. Manual release-workflow dispatch only builds downloadable artifacts.
+
+Use new annotated tags. Do not move published tags or force-push. Verify workflow success, published assets and their checksums before distributing a release.
+
+## Development and translations
+
+Edit TypeScript under `src/`, schemas under `schemas/`, and `.po` translation sources under `po/`. Do not edit generated `_build/` files. Run `npm run translate` to update translation templates and review the changes.
+
+`npm start` and `npm run start:container` explicitly install a per-user copy and start a nested development Shell. They are desktop-changing commands; use `make check` and `make release` for isolated validation.
+
+## Support, credits and license
+
+Report fork issues to [this repository's issue tracker](https://github.com/tiagosantosvdl/gnome-notification-configurator/issues). Include the extension version, GNOME version, installation method and relevant logs.
+
+Credit to [ExposedCat and upstream contributors](https://github.com/ExposedCat/gnome-notification-configurator) for the extension, translations and artwork. The original project also provides [upstream support and sponsorship information](https://github.com/ExposedCat/gnome-notification-configurator#readme).
+
+Licensed under [GPL-3.0-or-later](LICENSE). Preserve upstream copyright and license notices.

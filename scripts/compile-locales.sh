@@ -1,8 +1,8 @@
-DOMAIN="$1"
-
-for PO in po/*.po; do
-  LANG=${PO##*/}
-  LANG=${LANG%.po}
-  mkdir -p "./dist/locale/$LANG/LC_MESSAGES"
-  msgfmt "$PO" -o "./dist/locale/$LANG/LC_MESSAGES/$DOMAIN.mo"
+#!/usr/bin/env bash
+set -euo pipefail
+for source in po/*.po; do
+    language=$(basename "$source" .po)
+    destination="_build/locale/$language/LC_MESSAGES"
+    mkdir -p "$destination"
+    msgfmt "$source" -o "$destination/notification-configurator@exposedcat.mo"
 done

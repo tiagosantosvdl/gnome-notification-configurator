@@ -9,7 +9,6 @@
     "moduleResolution": "NodeNext",
     "target": "ESNext",
     "resolveJsonModule": true,
-    "importsNotUsedAsValues": "remove",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "sourceMap": false,
@@ -20,7 +19,7 @@
     "maxNodeModuleJsDepth": 2,
     "declaration": false,
     "rootDir": "./src",
-    "outDir": "./dist"
+    "outDir": "./_build"
   },
   "include": [
     "src/**/*"

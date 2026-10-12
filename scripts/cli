@@ -1,79 +1,34 @@
-#!/bin/bash
-
-NAME="notification-configurator"
-DOMAIN="exposedcat"
-
-SLUG="$NAME@$DOMAIN"
-ARCHIVE="$SLUG.shell-extension.zip"
-EXTENSIONS="/home/$USER/.local/share/gnome-shell/extensions"
-
-pack() {
-	cd dist || exit
-	zip -9r "../$ARCHIVE" .
-	cd ..
-}
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
 
 build() {
-  npx tsc
-  cp -r metadata.json schemas dist
-
-  glib-compile-schemas ./dist/schemas
-  ./scripts/compile-locales.sh "$SLUG"
+    rm -rf _build
+    ./node_modules/.bin/tsc
+    cp metadata.json LICENSE _build/
+    mkdir -p _build/schemas
+    cp schemas/*.xml _build/schemas/
+    glib-compile-schemas --strict _build/schemas
+    bash scripts/compile-locales.sh
 }
 
-inject() {
-  mkdir -p "$EXTENSIONS"
-  rm -rf "${EXTENSIONS:?}/$SLUG"
-  unzip $ARCHIVE -d "$EXTENSIONS/$SLUG"
-  glib-compile-schemas "$EXTENSIONS/$SLUG/schemas"
-}
-
-deps() {
-  npm install
-}
-
-install() {
-	build
-	pack
-  inject
-}
-
-case $1 in
-clean)
-  rm -rf dist node_modules $ARCHIVE locale
-  ;;
-build)
-  build
-  ;;
-cleanup)
-	rm -f ./dist/schemas/gschemas.compiled
-  ;;
-pack)
-	pack
-  ;;
-inject)
-	inject
-  ;;
-translate)
-  build
-	./scripts/update-pot.sh
-  ;;
-uninstall)
-  rm -rf "${EXTENSIONS:?}/$SLUG"
-  ;;
-install)
-  deps
-  install
-  ;;
-dev)
-	install
-  dbus-run-session gnome-shell --devkit --wayland --no-x11
-  ;;
-dev:container)
-	install
-  distrobox enter gnome-dev -- env PIPEWIRE_RUNTIME_DIR="/run/host/${XDG_RUNTIME_DIR#/}" PIPEWIRE_REMOTE=pipewire-0 G_MESSAGES_DEBUG=all dbus-run-session gnome-shell --devkit --wayland --no-x11
-  ;;
-*)
-  echo "Unknown command '$1'"
-  ;;
+case "${1:-}" in
+    build) build ;;
+    pack) make release ;;
+    clean) make clean ;;
+    cleanup) echo 'Compiled schemas are retained in installable packages.' ;;
+    install|inject) make install ;;
+    translate)
+        build
+        bash scripts/update-pot.sh
+        ;;
+    dev)
+        make install
+        dbus-run-session gnome-shell --devkit --wayland --no-x11
+        ;;
+    dev:container)
+        make install
+        distrobox enter gnome-dev -- env PIPEWIRE_RUNTIME_DIR="/run/host/${XDG_RUNTIME_DIR#/}" PIPEWIRE_REMOTE=pipewire-0 G_MESSAGES_DEBUG=all dbus-run-session gnome-shell --devkit --wayland --no-x11
+        ;;
+    *) echo "Unknown command '${1:-}'" >&2; exit 2 ;;
 esac
